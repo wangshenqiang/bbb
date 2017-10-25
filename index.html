@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
+
+</style>
+<body>
+    <div id="root"></div>
+    <script src="reacts/react.js"></script>
+    <script src="reacts/react-dom.js"></script>
+    <script src="reacts/babel.min.js"></script>
+    <script type="text/babel">
+            class Btn extends React.Component{
+                commonStyle={
+                    padding:"10px 15px",
+                    border:"3px solid #ccc",
+                    outline:"none"
+                }
+                certainStyle={
+                    background:"blue",
+                    color:"#fff",
+                    ...this.commonStyle
+                }
+                cancelStyle={
+                    background:"pink",
+                    color:"#fff",
+                    ...this.commonStyle
+                }
+                render(){
+                    let type=this.props.type || "certain";
+                    let txt=this.props.con;
+                    let tpl=(<button></button>);
+                    let callback=()=>{
+                        this.props.callback;
+                    }
+                    switch (type) {
+                        case "certain":
+                            txt=txt || "确定";
+                            tpl=<button style={this.certainStyle} onClick={callback}>{txt}</button>
+                            break;
+                        case "cancel":
+                            txt=txt || "取消";
+                            tpl=<button style={this.cancelStyle} onClick={callback}>{txt}</button>
+                            break;
+                        default:
+                            break;
+                    }
+                    return tpl
+                }
+            }
+            class Title extends React.Component{
+                titleStyle={
+                    borderBottom:"1px solid #ccc",
+                    height:"80px",
+                    lineHeight:"80px",
+                    textIndent:"10px",
+                    textAlign:"center"
+                }
+                render(){
+                    let title=this.props.title || "我是标题";
+                    return <div className="title" style={this.titleStyle}>{title}</div>
+                }
+            }
+            class Content extends React.Component{
+                contentStyle={
+                    padding:"10px",
+                    lineHeight:"10px",
+                    textAlign:"center"
+                }
+                render(){
+                    let content=this.props.content || "这是提示信息";
+                    return <div className="content" style={this. contentStyle}>{content}</div>
+                }
+            }
+            // 遮罩
+            class Shade extends React.Component{
+                state={
+                    show:true
+                }
+                show(){
+                    this.setState((state)=>{
+                        state.show=true;
+                    })
+                }
+                hide(){
+                    this.setState((state)=>{
+                        state.show=false;
+                    })
+                }
+                noneStyle={
+                    display:"none";
+                }
+                shadeStyle={
+                    width:"100%",
+                    height:"100%",
+                    background:"rgba(0,0,0,0.7)",
+                    position:"fixed",
+                    left:"0",
+                    top:"0"
+                }
+                render(){
+                    return <div style={this.state.show?this.shadeStyle:this.noneStyle}>
+                                     {this.props.children}
+                    
+                             </div>
+                }
+            }
+            class Wrap extends React.Component{
+                // state={
+                //     show:true
+                // }
+                // show(){
+                //     this.setState((state)=>{
+                //         state.show=true;
+                //     })
+                // }
+                // hide(){
+                //     this.setState((state)=>{
+                //         state.show=false;
+                //     })
+                // }
+                wrapStyle={
+                    position:"absolute",
+                    left:"50%",
+                    top:"50%",
+                    transform:"translate3d(-50%,-50%,0)",
+                    background:"#ff0",
+                    width:"200px",
+                    height:"160px"
+                }
+        
+                ButtonStyle={
+                    textAlign:"center"
+                }
+                    confirm(){
+                        console.log("确定")
+
+                    }
+                    abolish(){
+                        console.log("取消")
+
+                    }
+                render(){
+                    let title=this.props.title || "我是标题";
+                    let content=this.props.content || "这是提示信息";
+                    let hide=this.props.hide;
+                    return (<div className="wrap" style={this.wrapStyle}>
+                            <Title title={title}/>
+                            <Content content={content}/>
+                           
+                            <div style={this.ButtonStyle}>
+                                <Btn callback={this.confirm} con="确定" />
+                                <Btn callback={this.abolish} con="取消"/>
+                            </div>
+                        </div>)
+                      
+                        
+                  
+                }
+            }
+            ReactDOM.render(<Shade>
+                                <Wrap title="我是大标题" content="1111" ></Wrap> 
+                            </Shade>,
+                   
+                document.querySelector("#root")
+            )
+    </script>
+</body>
+</html>
